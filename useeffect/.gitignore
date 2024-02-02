@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+// import logo from './logo.svg';
+// import './App.css';
+import React, {useState, useEffect} from 'react'
+
+function App() {
+  const [resources, setResources] = useState('posts')
+
+  const [items,setItems] = useState([])
+
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/${resources}`)
+      .then(response => response.json())
+      .then(json => setItems(json))
+  }, [resources]) //the array never changes on different renders. if the values inside the array changes the code inside the useEffect renders
+  return (
+    <>
+      <div>
+        <button onClick={() => setResources('posts')}>Posts</button>
+        <button onClick={() => setResources('users')}>Users</button>
+        <button onClick={() => setResources('comments')}>Comments</button>
+      </div>
+      <h1>{resources}</h1>
+      {items.map(item => {
+        return <pre>{JSON.stringify(item)}</pre>
+      })}
+
+    </>
+  );
+}
+
+export default App;
